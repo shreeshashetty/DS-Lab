@@ -1,0 +1,139 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<malloc.h>
+
+void create();
+void display();
+void insert_first();
+void insert_end();
+void insert_any();
+
+struct Node
+{
+    int data;
+    struct Node *link;
+};
+typedef struct Node node;
+node *start=NULL;
+
+void main()
+{
+    int ch;
+    while(1)
+    {
+        printf("\nEnter your choice:\n1.Create\n2.Display \n3.Insert at first pos \n4.Insert at end pos\n5.Insert at any pos\n6.Exit\n");
+        scanf("%d",&ch);
+        switch(ch)
+        {
+        case 1:
+            create();
+            break;
+        case 2:
+            display();
+            break;
+        case 3:
+            insert_first();
+            break;
+        case 4:
+            insert_end();
+            break;
+        case 5: insert_any();
+            break;
+        case 6:
+            exit(0);
+
+        default:
+            printf("Invalid choice\n");
+        }
+    }
+}
+
+void create()
+{
+    int c;
+    node *new,*curr;
+    start=(node *) malloc(sizeof(node));
+    curr=start;
+    printf("Enter element:\n");
+    scanf("%d",&start->data);
+    while(1)
+    {
+        printf("Do you want to add another element(Yes=1/No=0)\n");
+        scanf("%d",&c);
+        if(c==1)
+        {
+            new=(node *) malloc(sizeof(node));
+            printf("Enter element:\n");
+            scanf("%d",&new->data);
+            curr->link = new;
+            curr=new;
+        }
+        else
+        {
+            curr->link=NULL;
+            break;
+        }
+    }
+}
+
+void display()
+{
+    node *temp;
+    if(start==NULL)
+    {
+        printf("Linked list is empty\n");
+        return;
+    }
+    temp=start;
+    while(temp!=NULL)
+    {
+        printf("%d\t",temp->data);
+        temp = temp->link;
+    }
+}
+
+void insert_first()
+{
+    node *temp,*mew;
+    mew = (node *) malloc(sizeof(node));
+    temp = start;
+    printf("Enter element value:\n");
+    scanf("%d",&mew->data);
+    mew->link = start;
+    start = mew;
+}
+
+void insert_end()
+{
+    node *new,*temp;
+    new = (node *) malloc(sizeof(node));
+    temp = start;
+    printf("Enter element value:\n");
+    scanf("%d",&new->data);
+    while(temp->link!=NULL)
+    {
+        temp = temp->link;
+    }
+    temp->link = new;
+    new->link = NULL;
+}
+
+void insert_any()
+{
+    node *new,*ptr,*prevptr;
+    int val;
+    new = (node *) malloc(sizeof(node));
+    ptr = start;
+    prevptr = start;
+    printf("Enter element value:\n");
+    scanf("%d",&new->data);
+    printf("Enter pos in between where elenent to be placed:\n");
+    scanf("%d",&val);
+    while(ptr->data !=val)
+    {
+        prevptr = ptr;
+        ptr = ptr->link;
+    }
+    prevptr->link = new;
+    new->link = ptr;
+}
