@@ -1,0 +1,130 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<malloc.h>
+
+void create();
+void display();
+void delete_first();
+void delete_end();
+void delete_any();
+
+struct Node
+{
+    int data;
+    struct Node *link;
+};
+typedef struct Node node;
+node *start=NULL;
+
+void main()
+{
+    int ch;
+    while(1)
+    {
+        printf("\nEnter your choice:\n1.Create\n2.Display \n3.Delete at first pos \n4.Delete at end pos\n5.Delete at any pos\n6.Exit\n");
+        scanf("%d",&ch);
+        switch(ch)
+        {
+        case 1:
+            create();
+            break;
+        case 2:
+            display();
+            break;
+        case 3: delete_first();
+            break;
+        case 4:delete_end();
+            break;
+        case 5:delete_any();
+            break;
+        case 6:
+            exit(0);
+
+        default:
+            printf("Invalid choice\n");
+        }
+    }
+}
+
+void create()
+{
+    int c;
+    node *new,*curr;
+    start=(node *) malloc(sizeof(node));
+    curr=start;
+    printf("Enter element:\n");
+    scanf("%d",&start->data);
+    while(1)
+    {
+        printf("Do you want to add another element(Yes=1/No=0)\n");
+        scanf("%d",&c);
+        if(c==1)
+        {
+            new=(node *) malloc(sizeof(node));
+            printf("Enter element:\n");
+            scanf("%d",&new->data);
+            curr->link = new;
+            curr=new;
+        }
+        else
+        {
+            curr->link=NULL;
+            break;
+        }
+    }
+}
+
+void display()
+{
+    node *temp;
+    if(start==NULL)
+    {
+        printf("Linked list is empty:\n");
+        return;
+    }
+    temp=start;
+    while(temp!=NULL)
+    {
+        printf("%d\t",temp->data);
+        temp = temp->link;
+    }
+}
+
+void delete_first()
+{
+    node *ptr;
+    ptr = start;
+    start=start->link;
+    free(ptr);
+}
+
+void delete_end()
+{
+    node *ptr,*prevptr;
+    ptr = start;
+    prevptr = start;
+    while(ptr->link != NULL)
+    {
+        prevptr = ptr;
+        ptr = ptr->link;
+    }
+    prevptr->link = NULL;
+    free(ptr);
+}
+
+void delete_any()
+{
+    int val;
+    node *ptr,*prevptr;
+    prevptr = start;
+    ptr = start;
+    printf("Enter value to be deleted:\n");
+    scanf("%d",&val);
+    while(ptr->data!=val)
+    {
+        prevptr = ptr;
+        ptr = ptr->link;
+    }
+    prevptr->link = ptr->link;
+    free(ptr);
+}
